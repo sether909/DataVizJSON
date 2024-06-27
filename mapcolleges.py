@@ -37,7 +37,7 @@ title = 'Big 12 Schools Graph'
 fig = px.scatter_geo(lat=lats, lon=lons, size=enrollments, title=title,
         color=enrollments,
         color_continuous_scale='Viridis',
-        labels={'color':'Magnitude'},
+        labels={'color':'Enrollment'},
         projection='natural earth',
         hover_name=eq_titles,
     )
