@@ -19,21 +19,23 @@ data = json.loads(contents)
 
 # Examine in the dataset.
 all_eq_dicts = data['features']
-
-enrollment, lons, lats, eq_titles = [], [], [], []
+enrollments, lons, lats, eq_titles = [], [], [], []
 for eq_dict in all_eq_dicts:
-    if eq_dict['properties']['NAME'] in Big12_Unis:
-        eq_title = eq_dict['properties']['NAME']
-        enrollment = Big12_Unis[eq_title]["Total  enrollment (DRVEF2020)"]
-        lon = eq_dict['geometry']['coordinates'][0]
-        lat = eq_dict['geometry']['coordinates'][1]
-        lons.append(lon)
-        lats.append(lat)
-        eq_titles.append(eq_title)
+    for university in Big12_Unis:
+        if eq_dict['properties']['NAME'] == university["instnm"]:
+            eq_title = eq_dict['properties']['NAME']
+            enrollment = float(university["Total  enrollment (DRVEF2020)"])
+            lon = eq_dict['geometry']['coordinates'][0]
+            lat = eq_dict['geometry']['coordinates'][1]
+
+            eq_titles.append(eq_title)
+            enrollments.append(enrollment)
+            lons.append(lon)
+            lats.append(lat)
 
 title = 'Big 12 Schools Graph'
-fig = px.scatter_geo(lat=lats, lon=lons, size=enrollment, title=title,
-        color=enrollment,
+fig = px.scatter_geo(lat=lats, lon=lons, size=enrollments, title=title,
+        color=enrollments,
         color_continuous_scale='Viridis',
         labels={'color':'Magnitude'},
         projection='natural earth',
